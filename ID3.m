@@ -2,24 +2,23 @@ function tree =ID3(examples,target_attribute,attributes)
 %create root node for tree
 tree.root = ''
 
-
 %If all Examples have the same Target value, Return single-node tree Root with value 
-singleNode = examples(1).target_attribute
+singleNode = examples(1).(target_attribute)
 for i = 2:length(examples)
-    if(examples(i).target_attribute != singleNode)
+    if(~strcmp(examples(i).(target_attribute),singleNode))
         break
-    elseif(i == length(examples)
+    elseif(i == length(examples))
         tree.root = singleNode
-        return tree
+        return
     end
 end
 
 %If number of predicting attributes is empty, return the single node tree Root, 
-if(length(attributes)==0
-    getComValOfAtt(examples,target_attribute)
-    return tree
-end
 %with label = most common value of the target attribute in examples. 
+if(length(attributes)==0)
+    tree.root = getComValOfAtt(examples,target_attribute)
+    return
+end
 %Otherwise Begin 
 %A = The Attribute that best classifies examples. (Highest Information Gain)
 %Decision Tree attribute for Root = A. 
